@@ -130,19 +130,10 @@ util.formatLargeNumber = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 util.pullJSON = filename => {
-    let request = new XMLHttpRequest();
-    let url = "/json/" + filename + ".json?v=" + VERSION;
-    // Set up the request
+    let url = "/json/" + filename + ".json";
     console.log("Loading JSON from " + url);
-    request.responseType = 'json';
-    // Return a promise
-    return new Promise((resolve, reject) => {
-        request.open('GET', url);
-        request.onload = () => { resolve(request.response); console.log('JSON load complete.'); };
-        request.onerror = () => { reject(request.statusText); console.log('JSON load failed.'); console.log(request.statusText); };
-        request.send();
-    });
-};
+    return fetch(url, { cache: "no-cache" }).then(response => response.json());
+}
 
 // Get color
 var config = {
